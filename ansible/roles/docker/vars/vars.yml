@@ -1,0 +1,2 @@
+ECR_REPOSITORY_URI ="426857564226.dkr.ecr.us-east-1.amazonaws.com/papila-repo"
+IMAGE_TAG ="latest"

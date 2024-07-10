@@ -1,0 +1,11 @@
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: latest
+    update_cache: true
+
+
+- name: copy configuration file
+  ansible.builtin.template:
+    src: laravel-app.conf.j2
+    dest: /etc/nginx/sites-enabled/default

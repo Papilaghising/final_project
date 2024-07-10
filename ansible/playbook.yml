@@ -1,0 +1,16 @@
+---
+- hosts: aws_ec2
+  become: true
+  gather_facts: true
+  # vars_files:
+  #   - vars_playbook/main.yml
+  roles:
+    # - nginx
+    - docker  
+  vars:
+    ansible_user: ubuntu
+    ansible_connection: aws_ssm
+    ansible_aws_ssm_region: us-east-1
+    ansible_aws_ssm_bucket_name: 8586-terraform-state
+
+    
