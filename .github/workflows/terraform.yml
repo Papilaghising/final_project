@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - laravel 
-#   workflow_dispatch:
+  workflow_dispatch:
 permissions:
       id-token: write
       contents: read
@@ -97,29 +97,29 @@ jobs:
           docker-compose --version
 
 
-    build:
-        needs: [terraform,docker-install]
-        runs-on: ubuntu-latest
+  build:
+    needs: [terraform,docker-install]
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+    steps:
+    - name: Checkout repository
+        uses: actions/checkout@v2
 
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: ${{ env.ACCESS_KEY }}
-            aws-secret-access-key: ${{ env.SECRET_KEY }}
-            aws-session-token: ${{ env.SESSION_TOKEN }}
-            aws-region: ${{ env.AWS_REGION }}
+    - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+        aws-access-key-id: ${{ env.ACCESS_KEY }}
+        aws-secret-access-key: ${{ env.SECRET_KEY }}
+        aws-session-token: ${{ env.SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
 
-        - name: Build, tag, and push image to Amazon ECR
-          run: |
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
-            
-            docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./app
+    - name: Build, tag, and push image to Amazon ECR
+        run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
+        
+        docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./app
 
-            docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
+        docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
 
   configure:
