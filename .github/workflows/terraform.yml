@@ -87,7 +87,7 @@ jobs:
       - name: Install Docker Dependencies
         run: |
           echo "Running docker.sh script"
-          sudo ./docker.sh
+          sudo sh ./docker.sh
 
       
       - name: Verify Docker Installation
