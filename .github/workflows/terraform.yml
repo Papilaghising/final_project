@@ -6,6 +6,10 @@ on:
     branches:
       - laravel 
   workflow_dispatch:
+permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
@@ -39,27 +43,20 @@ jobs:
           aws-session-token: ${{ env.SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-
-
       - name: Initialize Terraform
         run: |
           cd terraform
           terraform init -backend-config="bucket=${{ env.backendS3Bucket }}" -backend-config="key=${{ env.backendS3AccountId }}/${{ env.backendS3StateFile }}" -backend-config="region=${{ env.backendS3Region }}"
           
-
-
       - name: Terraform plan
         run: |
           cd terraform
           terraform plan -var-file=vars.tfvars 
         
-
-
       - name: Apply Terraform Changes
         run: |
           cd terraform
           terraform apply -var-file=vars.tfvars -auto-approve
-
 
       - name: Destroy Terraform Resources
         if: github.event_name == 'workflow_dispatch'
