@@ -1,5 +1,5 @@
 #.github/workflows/terraform
-name: Terraform Deployment
+name: Terraform Deployment and ecr
 
 on:
   push:
