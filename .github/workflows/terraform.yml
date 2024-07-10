@@ -103,18 +103,18 @@ jobs:
 
     steps:
     - name: Checkout repository
-        uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
         aws-access-key-id: ${{ env.ACCESS_KEY }}
         aws-secret-access-key: ${{ env.SECRET_KEY }}
         aws-session-token: ${{ env.SESSION_TOKEN }}
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Build, tag, and push image to Amazon ECR
-        run: |
+      run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
         
         docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./app
