@@ -18,12 +18,12 @@ env:
   backendS3Bucket: "8586-terraform-state"
   backendS3AccountId: ${{ secrets.ACCOUNT_ID }}
   backendS3StateFile: "friday_task_papila.tfstate"
-  backendS3region: us-east-1
-  ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
+  backendS3region: "us-east-1"
+  ECR_REPOSITORY_URI: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
 
 
 
- jobs:
+jobs:
   terraform:
     runs-on: ubuntu-latest
 
