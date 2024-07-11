@@ -22,6 +22,9 @@ env:
   backendS3region: us-east-1
   ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
 
+
+
+  
 jobs:
   terraform:
     runs-on: ubuntu-latest
