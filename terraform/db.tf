@@ -4,7 +4,7 @@ module "db" {
   identifier = "chatapplication-db"
 
   engine            = "mysql"
-  engine_version    = "8"
+  engine_version    = "8.0.37"
   instance_class    = "db.t3.micro"
   allocated_storage = 5
 
@@ -30,7 +30,7 @@ module "db" {
   subnet_ids             = [module.vpc.private_subnets[0],module.vpc.private_subnets[1]]
 
   # DB parameter group
-  family = "mysql5.7"
+  family = "mysql8"
 
   # DB option group
   major_engine_version = "8"
