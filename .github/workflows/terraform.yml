@@ -6,9 +6,9 @@ on:
       - laravel 
   workflow_dispatch:
 permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+      id-token: write
+      contents: read
+      pull-requests: write
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
@@ -18,14 +18,14 @@ env:
   backendS3Bucket: "8586-terraform-state"
   backendS3AccountId: ${{ secrets.ACCOUNT_ID }}
   backendS3StateFile: "friday_task_papila.tfstate"
-  backendS3region: "us-east-1"
-  ECR_REPOSITORY_URI: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
-
-
+  backendS3region: us-east-1
+  ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
+  IMAGE_TAG: latest
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
 
     steps:
       - name: Checkout Repository
