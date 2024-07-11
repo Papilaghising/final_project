@@ -127,10 +127,11 @@ jobs:
           docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
 
           docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
-          
+      
+    
 
   configure:
-     needs: build
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
