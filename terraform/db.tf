@@ -33,7 +33,7 @@ module "db" {
   family = "mysql8.0"
 
   # DB option group
-  major_engine_version = "8"
+  major_engine_version = "8.0"
 
   # Database Deletion Protection
   deletion_protection = true
