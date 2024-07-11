@@ -14,7 +14,6 @@ RUN docker-php-ext-install  pdo pdo_mysql mbstring
 
 # Set working directory
 WORKDIR /app
-
 # Copy the code inside the working directory 
 COPY . /app
 
@@ -29,8 +28,8 @@ RUN php artisan storage:link
 
 RUN npm install
 
-COPY ./laravel/run.sh /tmp    
-ENTRYPOINT ["/tmp/run.sh"]
+# COPY ./laravel/run.sh /tmp    
+# ENTRYPOINT ["/tmp/run.sh"]
 
 
 
