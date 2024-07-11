@@ -33,10 +33,11 @@
 
 - name: Pull Docker image
   docker_image:
-    name: "{{ lookup('env', 'ECR_REGISTRY') }}/{{ lookup('env', 'ECR_REPOSITORY') }}"
+    # name: "{{ lookup('env', 'ECR_REGISTRY') }}/{{ lookup('env', 'ECR_REPOSITORY') }}"
     name: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
-    tag: latest
+    tag: "{{ docker_image_tag }}"
     source: pull
+
 
 - name: Run Docker container
   docker_container:

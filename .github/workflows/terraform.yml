@@ -112,15 +112,6 @@ jobs:
           aws-session-token: ${{ env.SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Build, tag, and push image to Amazon ECR with tag latest
-        run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
-          
-          docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:latest ./laravel
-
-          docker push ${{ env.ECR_REPOSITORY_URI }}:latest
-
-
 
       - name: Generate docker image tag
         id: generate-image-tag
@@ -166,4 +157,5 @@ jobs:
       - name: run ansible playbook
         run: |
           cd ansible
-          ansible-playbook -i aws_ec2.yml playbook.yml   
+          ansible-playbook -i aws_ec2.yml playbook.yml 
+          ansible-playbook myplaybook.yaml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
