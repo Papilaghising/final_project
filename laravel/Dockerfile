@@ -8,12 +8,6 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get install -
 
 # Installing composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer --version
-
-
-# RUN apt update && \
-#   curl -sS https://getcomposer.org/installer | php \
-#   && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer
 
 # Install required php extension  
 RUN docker-php-ext-install  pdo pdo_mysql mbstring
@@ -25,7 +19,7 @@ WORKDIR /app
 COPY . /app
 
 # Install project dependencies
-RUN composer install 
+RUN composer update && composer install 
 
 # Run necessary commands to run the application
 RUN php artisan key:generate 
