@@ -28,7 +28,7 @@ module "db" {
   # DB subnet group
   create_db_subnet_group = true
   subnet_ids             = [module.vpc.private_subnets[0],module.vpc.private_subnets[1]]
-
+  allow_major_version_upgrade = true
   # DB parameter group
   family = "mysql8.0"
 
