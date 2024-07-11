@@ -21,7 +21,7 @@ env:
   backendS3StateFile: "friday_task_papila.tfstate"
   backendS3region: us-east-1
   ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
-  IMAGE_TAG: latest
+  IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
 
 jobs:
   terraform:
@@ -113,12 +113,22 @@ jobs:
         aws-session-token: ${{ env.SESSION_TOKEN }}
         aws-region: ${{ env.AWS_REGION }}
 
+
+    - name: Get commit hash
+      id: get-commit-hash
+      run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
+      
+    - name: Get timestamp
+      id: get-timestamp
+      run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+
+
     - name: Build, tag, and push image to Amazon ECR
       run: |
         cd laravel
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
         
-        docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} 
+        docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} .
 
         docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
