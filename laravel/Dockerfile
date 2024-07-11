@@ -20,7 +20,7 @@ WORKDIR /app
 COPY . /app
 
 # Install project dependencies
-RUN composer update && composer install 
+RUN composer install 
 
 # Run necessary commands to run the application
 RUN php artisan key:generate 
