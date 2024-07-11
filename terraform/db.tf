@@ -4,7 +4,7 @@ module "db" {
   identifier = "chatapplication-db"
 
   engine            = "mysql"
-  engine_version    = "5.7"
+  engine_version    = "8"
   instance_class    = "db.t3.micro"
   allocated_storage = 5
 
@@ -12,7 +12,6 @@ module "db" {
   username = "laravel"
   port     = "3306"
 
-  iam_database_authentication_enabled = true
   vpc_security_group_ids      = [module.security_group.security_group_id]
   
 
@@ -34,7 +33,7 @@ module "db" {
   family = "mysql5.7"
 
   # DB option group
-  major_engine_version = "5.7"
+  major_engine_version = "8"
 
   # Database Deletion Protection
   deletion_protection = true

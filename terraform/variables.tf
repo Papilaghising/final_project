@@ -1,9 +1,4 @@
-
-
-variable "db_engine" {
-    type = string
-    description = "(optional) describe your variable"
-}# Argument Reference for the resources
+# Argument Reference for the resources
 ################################################################################
 
 variable "region" {
