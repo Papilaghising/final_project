@@ -97,49 +97,49 @@ jobs:
   #         docker-compose --version
 
 
-  build:
-    # needs: [terraform,docker-install]
-    runs-on: ubuntu-latest
+  # build:
+  #    needs: [terraform,docker-install]
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ env.ACCESS_KEY }}
-        aws-secret-access-key: ${{ env.SECRET_KEY }}
-        aws-session-token: ${{ env.SESSION_TOKEN }}
-        aws-region: ${{ env.AWS_REGION }}
-
-
-    - name: Generate docker image tag
-      id: generate-image-tag
-      if: steps.prerun.outputs.result != 'skip'
-      run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v3
+  #     with:
+  #       aws-access-key-id: ${{ env.ACCESS_KEY }}
+  #       aws-secret-access-key: ${{ env.SECRET_KEY }}
+  #       aws-session-token: ${{ env.SESSION_TOKEN }}
+  #       aws-region: ${{ env.AWS_REGION }}
 
 
+  #   - name: Generate docker image tag
+  #     id: generate-image-tag
+  #     if: steps.prerun.outputs.result != 'skip'
+  #     run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
 
-    - name: Build, tag, and push image to Amazon ECRr
-      run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
+
+
+  #   - name: Build, tag, and push image to Amazon ECRr
+  #     run: |
+  #       aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
         
-        docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
+  #       docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
 
-        docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
+  #       docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
 
   configure:
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v3
 
 
       - name: install ansible and dependencies

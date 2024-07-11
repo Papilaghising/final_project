@@ -21,8 +21,7 @@ COPY . /app
 RUN composer update && composer install 
 
 # Run necessary commands to run the application
-RUN php artisan key:generate 
-# && php artisan config:clear
+RUN php artisan key:generate && php artisan config:clear
 
 RUN php artisan storage:link
 
