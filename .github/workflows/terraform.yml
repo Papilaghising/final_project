@@ -135,18 +135,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3 
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ env.ACCESS_KEY }}
+        aws-secret-access-key: ${{ env.SECRET_KEY }}
+        aws-session-token: ${{ env.SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
 
-      - name: install ansible and dependencies
-        run: |
-          pip3 install botocore boto3 ansible
+    - name: install ansible and dependencies
+      run: |
+        pip3 install botocore boto3 ansible
 
-      - name: run ansible playbook
-        run: |
-          cd ansible
-          ansible-playbook -i aws_ec2.yml playbook.yml   
+    - name: run ansible playbook
+      run: |
+        cd ansible
+        ansible-playbook -i aws_ec2.yml playbook.yml   
