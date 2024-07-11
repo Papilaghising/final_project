@@ -30,5 +30,8 @@ RUN php artisan storage:link
 
 RUN npm install
 
-COPY ./run.sh /tmp    
+COPY ./laravel/run.sh /tmp    
 ENTRYPOINT ["/tmp/run.sh"]
+
+
+
