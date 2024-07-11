@@ -20,7 +20,7 @@ env:
   backendS3AccountId: ${{ secrets.ACCOUNT_ID }}
   backendS3StateFile: "friday_task_papila.tfstate"
   backendS3region: us-east-1
-  ECR_REPOSITORY_URI: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
+  ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
 
 jobs:
   terraform:
@@ -128,33 +128,31 @@ jobs:
 
         docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
-        docker push ${{ env.ECR_REPOSITORY_URI }}:latest
-
 
   configure:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v3 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3 
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ env.ACCESS_KEY }}
-        aws-secret-access-key: ${{ env.SECRET_KEY }}
-        aws-session-token: ${{ env.SESSION_TOKEN }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ env.ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.SECRET_KEY }}
+          aws-session-token: ${{ env.SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: install ansible and dependencies
-      run: |
-        pip3 install botocore boto3 ansible
+      - name: install ansible and dependencies
+        run: |
+          pip3 install botocore boto3 ansible
 
-    - name: run ansible playbook
-      run: |
-        cd ansible
-        ansible-playbook -i aws_ec2.yml playbook.yml   
+      - name: run ansible playbook
+        run: |
+          cd ansible
+          ansible-playbook -i aws_ec2.yml playbook.yml   
