@@ -20,7 +20,7 @@ env:
   backendS3StateFile: "friday_task_papila.tfstate"
   backendS3region: us-east-1
   ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
-  IMAGE_TAG: latest
+  # IMAGE_TAG: latest
 
 jobs:
   terraform:
@@ -156,4 +156,4 @@ jobs:
       - name: run ansible playbook
         run: |
           cd ansible
-          ansible-playbook myplaybook.yaml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          ansible-playbook playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
