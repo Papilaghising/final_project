@@ -30,7 +30,7 @@ module "db" {
   subnet_ids             = [module.vpc.private_subnets[0],module.vpc.private_subnets[1]]
 
   # DB parameter group
-  family = "mysql8"
+  family = "mysql8.0"
 
   # DB option group
   major_engine_version = "8"
