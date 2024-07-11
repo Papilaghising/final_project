@@ -5,6 +5,8 @@ RUN apt-get update -y && apt-get install -y openssl zip unzip git gnupg2
 
 # Install Node.js and npm
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
+RUN apt-get update && \
+apt-get install -y --no-install-recommends gnupg && curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -; 
 
 
 # Installing composer
