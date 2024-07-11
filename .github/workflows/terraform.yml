@@ -117,7 +117,7 @@ jobs:
       run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }} 
         
-        docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./app
+        docker build -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
 
         docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
