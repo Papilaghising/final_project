@@ -31,6 +31,10 @@
     state: started
     enabled: yes
 
+- name: Debug docker_image_tag
+  debug:
+    var: docker_image_tag
+
 - name: Pull Docker image
   docker_image:
     # name: "{{ lookup('env', 'ECR_REGISTRY') }}/{{ lookup('env', 'ECR_REPOSITORY') }}"
