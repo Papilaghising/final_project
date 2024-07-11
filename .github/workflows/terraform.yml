@@ -20,7 +20,7 @@ env:
   backendS3AccountId: ${{ secrets.ACCOUNT_ID }}
   backendS3StateFile: "friday_task_papila.tfstate"
   backendS3region: us-east-1
-  ECR_REPOSITORY_URI: 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
+  ECR_REPOSITORY_URI: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
 
 jobs:
   terraform:
@@ -127,7 +127,7 @@ jobs:
         docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
 
         docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
-        
+
         docker push ${{ env.ECR_REPOSITORY_URI }}:latest
 
 
