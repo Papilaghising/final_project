@@ -156,4 +156,4 @@ jobs:
       - name: run ansible playbook
         run: |
           cd ansible
-          ansible-playbook playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
