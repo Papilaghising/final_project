@@ -24,11 +24,9 @@ env:
 
 
 
-  
-jobs:
+ jobs:
   terraform:
     runs-on: ubuntu-latest
-
 
     steps:
       - name: Checkout Repository
