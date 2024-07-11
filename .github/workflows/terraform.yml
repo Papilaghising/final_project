@@ -6,9 +6,9 @@ on:
       - laravel 
   workflow_dispatch:
 permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
+  id-token: write
+  contents: read
+  pull-requests: write
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
