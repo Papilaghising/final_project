@@ -55,7 +55,7 @@
     image: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
     state: started
     ports:
-      - "9000:9000"
+      - "8000:8000"
    
 
 
