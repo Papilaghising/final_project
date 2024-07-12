@@ -128,30 +128,10 @@ jobs:
 
           docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
 
-          
+
   # docker tag ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ${{ env.ECR_REPOSITORY_URI }}:latest
   # docker push ${{ env.ECR_REPOSITORY_URI }}:latest
   
-    
-
-  configure:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3 
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ env.ACCESS_KEY }}
-          aws-secret-access-key: ${{ env.SECRET_KEY }}
-          aws-session-token: ${{ env.SESSION_TOKEN }}
-          aws-region: ${{ env.AWS_REGION }}
 
       - name: install ansible and dependencies
         run: |
