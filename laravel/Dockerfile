@@ -28,7 +28,8 @@ RUN php artisan storage:link
 RUN npm install
 
 COPY ./run.sh /tmp/run.sh   
-ENTRYPOINT ["/tmp/run.sh"]
+RUN ls /tmp
+ENTRYPOINT ["sh", "/tmp/run.sh"]
 
 
 
