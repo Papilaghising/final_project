@@ -52,7 +52,7 @@
 - name: Run Docker container
   docker_container:
     name: laravel_app
-    image: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
+    image: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr:{{ docker_image_tag }}"
     state: started
     ports:
       - "8000:8000"
