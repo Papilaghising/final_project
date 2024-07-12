@@ -44,8 +44,8 @@
 - name: Pull Docker image
   docker_image:
     name: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
-    # tag: "7dbc20e6164b080e95aed0e99680ae9dcb721a7d-9894634009-1"
-    tag: "{{ docker_image_tag }}"
+    tag: "7dbc20e6164b080e95aed0e99680ae9dcb721a7d-9894634009-1"
+    # tag: "{{ docker_image_tag }}"
     source: pull
 
 
