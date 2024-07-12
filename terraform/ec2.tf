@@ -14,8 +14,8 @@ module "ec2" {
   # user_data_replace_on_change = true
   iam_role_description = "SSM Role for accessing EC2 instance"
   iam_role_policies      ={ 
-    SSM = data.aws_iam_role.ssm.arn
-    ECR = data.aws_iam_role.ecr.arn
+    SSM = data.aws_iam_policy.ssm.arn
+    ECR = data.aws_iam_policy.ecr.arn
   }
 }
 
