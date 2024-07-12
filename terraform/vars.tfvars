@@ -12,7 +12,7 @@ subnet_id                     = [module.vpc.public_subnets, module.vpc.private_s
 monitoring                    = true
 associate_public_ip_address   = true
 create_iam_instance_profile   = true
-ssm_policy                    = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+# ssm_policy                    = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
 name                          = "chatapplication-ec2-server"
 ami_id                        = "ami-0e001c9271cf7f3b9"
 
