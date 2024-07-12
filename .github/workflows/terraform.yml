@@ -127,7 +127,9 @@ jobs:
           docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ./laravel
 
           docker push ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
-      
+          docker tag ${{ env.ECR_REPOSITORY_URI }}:${{ env.IMAGE_TAG }} ${{ env.ECR_REPOSITORY_URI }}:latest
+          docker push ${{ env.ECR_REPOSITORY_URI }}:latest
+          
     
 
   configure:
@@ -156,4 +158,5 @@ jobs:
       - name: run ansible playbook
         run: |
           cd ansible
-          ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          ansible-playbook -i aws_ec2.yml playbook.yml 
+ # -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
