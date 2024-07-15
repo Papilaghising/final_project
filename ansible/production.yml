@@ -12,5 +12,3 @@
     ansible_aws_ssm_region: us-east-1
     ansible_aws_ssm_bucket_name: 8586-terraform-state
     docker_image_tag: "{{ docker_image_tag }}"
-
-    
