@@ -86,14 +86,7 @@ jobs:
         run: |
           cd terraform
           terraform init -backend-config="bucket=${{ env.backendS3Bucket }}" -backend-config="key=${{ env.backendS3AccountId }}/${{ env.backendS3StateFile }}" -backend-config="region=${{ env.backendS3Region }}"    
-      
-      - name: Terraform plan
-        if: github.ref_name == 'laravel'
-        run: |
-          cd terraform
-          terraform plan -var-file=dev.tfvars
-          echo "::set-output name=ecr_name::$(terraform output -raw ecr_name)"
-          echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
+
         
       - name: Get the codebase bucket name
         uses: mathiasvr/command-output@v1
@@ -113,13 +106,12 @@ jobs:
             
             # DB UserName
             db_username=$(terraform output --json -state=$state_file_name | jq -r '.db_username.value')
-            echo "db_username=$db_username" >> "$GITHUB_ENV"            
+            echo "db_username=$db_username" >> "$GITHUB_ENV"    
+        
+            # ECR Registry name
+            ecr_name=$(terraform output --json -state=$state_file_name | jq -r '.ecr_name.value')
+            echo "ecr_name=$ecr_name" >> "$GITHUB_ENV"  
 
-
-      - name: Generate docker image tag
-        id: generate-image-tag
-        if: steps.prerun.outputs.result != 'skip'
-        run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
 
       - name: Create .env for application
         run: |
@@ -169,6 +161,11 @@ jobs:
               MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
               MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
               EOF
+
+      - name: Generate docker image tag
+        id: generate-image-tag
+        if: steps.prerun.outputs.result != 'skip'
+        run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
 
       - name: Build, tag, and push image to Amazon ECRr
         run: |
