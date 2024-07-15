@@ -89,12 +89,12 @@ jobs:
       
      - name: Terraform plan
        if: github.ref_name == 'laravel'
-        run: |
-          cd terraform
-          terraform plan -var-file=dev.tfvars
-          echo "::set-output name=ecr_name::$(terraform output -raw ecr_name)"
-          echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
-        
+       run: |
+        cd terraform
+        terraform plan -var-file=dev.tfvars
+        echo "::set-output name=ecr_name::$(terraform output -raw ecr_name)"
+        echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
+      
       - name: Get the codebase bucket name
         uses: mathiasvr/command-output@v2
         id: resource-names
@@ -177,10 +177,6 @@ jobs:
           docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }} ./laravel
 
           docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }}
-
-
-  # docker tag ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }} ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:latest
-  # docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:latest
   
 
       - name: install ansible and dependencies
