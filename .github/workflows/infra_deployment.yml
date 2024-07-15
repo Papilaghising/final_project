@@ -1,76 +1,76 @@
-# name: Terraform Deployment and ecr
+name: Terraform Deployment and ecr
 
-# on:
-#   push:
-#     branches:
-#       - laravel 
-#       - main
-#   workflow_dispatch:
-# permissions:
-#       id-token: write
-#       contents: read
-#       pull-requests: write
+on:
+  push:
+    branches:
+      - laravel 
+      - main
+  workflow_dispatch:
+permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
 
-# env:
-#   AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-#   AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
-#   AWS_SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-#   AWS_REGION: "us-east-1"
-#   backendS3Bucket: "8586-terraform-state"
-#   backendS3StateFile: ${{ secrets.ACCOUNT_ID }}/${{ github.ref_name }}
-
-
-# jobs:
-#   terraform:
-#     runs-on: ubuntu-latest
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
+  AWS_SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+  AWS_REGION: "us-east-1"
+  backendS3Bucket: "8586-terraform-state"
+  backendS3StateFile: ${{ secrets.ACCOUNT_ID }}/${{ github.ref_name }}
 
 
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v3
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
 
-#       - name: Set up Terraform
-#         uses: hashicorp/setup-terraform@v3 
 
-#       - name: Configure AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v3
-#         with:
-#           aws-access-key-id: ${{ env.ACCESS_KEY }}
-#           aws-secret-access-key: ${{ env.SECRET_KEY }}
-#           aws-session-token: ${{ env.SESSION_TOKEN }}
-#           aws-region: ${{ env.AWS_REGION }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-#       - name: Initialize Terraform
-#         run: |
-#           cd terraform
-#           terraform init -backend-config="bucket=${{ env.backendS3Bucket }}" -backend-config="key=${{ env.backendS3StateFile }}" -backend-config="region=${{ env.AWS_REGION }}"
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3 
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ env.ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.SECRET_KEY }}
+          aws-session-token: ${{ env.SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Initialize Terraform
+        run: |
+          cd terraform
+          terraform init -backend-config="bucket=${{ env.backendS3Bucket }}" -backend-config="key=${{ env.backendS3StateFile }}" -backend-config="region=${{ env.AWS_REGION }}"
           
-#       - name: Terraform plan
-#         if: github.ref_name == 'laravel'
-#         run: |
-#           cd terraform
-#           terraform plan -var-file=dev.tfvars 
+      - name: Terraform plan
+        if: github.ref_name == 'laravel'
+        run: |
+          cd terraform
+          terraform plan -var-file=dev.tfvars 
 
-#       - name: Terraform plan
-#         if: github.ref_name == 'main'
-#         run: |
-#           cd terraform
-#           terraform plan -var-file=prod.tfvars
+      - name: Terraform plan
+        if: github.ref_name == 'main'
+        run: |
+          cd terraform
+          terraform plan -var-file=prod.tfvars
         
-#       - name: Apply Terraform Changes
-#         if: github.ref_name == 'laravel'
-#         run: |
-#           cd terraform
-#           terraform apply -var-file=dev.tfvars -auto-approve
+      - name: Apply Terraform Changes
+        if: github.ref_name == 'laravel'
+        run: |
+          cd terraform
+          terraform apply -var-file=dev.tfvars -auto-approve
 
-#       - name: Apply Terraform Changes
-#         if: github.ref_name == 'main'
-#         run: |
-#           cd terraform
-#           terraform apply -var-file=prod.tfvars -auto-approve
+      - name: Apply Terraform Changes
+        if: github.ref_name == 'main'
+        run: |
+          cd terraform
+          terraform apply -var-file=prod.tfvars -auto-approve
 
-#       - name: Destroy Terraform Resources
-#         if: github.event_name == 'workflow_dispatch'
-#         run: |
-#           cd terraform
-#           terraform destroy -var-file=dev.tfvars -auto-approve
+      - name: Destroy Terraform Resources
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          cd terraform
+          terraform destroy -var-file=dev.tfvars -auto-approve

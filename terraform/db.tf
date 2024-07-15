@@ -14,13 +14,13 @@ module "db" {
   maintenance_window          = "Mon:00:00-Mon:03:00"
   backup_window               = "03:00-06:00"
   monitoring_interval         = "30"
-  monitoring_role_name        = "chatapplication-RDSMonitoringRole"
+  monitoring_role_name        = "chatapp-RDSMonitoringRole"
   create_monitoring_role      = true
   create_db_subnet_group      = true
   create_db_option_group      = false
   subnet_ids                  = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
-  allow_major_version_upgrade = true
+  # allow_major_version_upgrade = true
   family                      = "mysql8.0"
   major_engine_version        = "8.0"
-  deletion_protection         = true
+  deletion_protection         = false
 }
