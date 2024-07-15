@@ -184,11 +184,13 @@ jobs:
         if: github.ref_name == 'laravel'
         run: |
           cd ansible
-          ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          # ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"
+          ansible-playbook -i aws_ec2.yml playbook.yml -e '{"docker_image_tag": "${{ env.IMAGE_TAG }}", "ecr_name": "${{ env.ecr_name}}"}'  
 
 
       - name: run ansible playbook in production environment
         if: github.ref_name == 'main'
         run: |
           cd ansible
-          ansible-playbook -i aws_ec2.yml production.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          # ansible-playbook -i aws_ec2.yml production.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+          ansible-playbook -i aws_ec2.yml production.yml -e '{"docker_image_tag": "${{ env.IMAGE_TAG }}", "ecr_name": "${{ env.ecr_name}}"}'

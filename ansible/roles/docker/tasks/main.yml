@@ -38,13 +38,12 @@
 
 - name: log in to Amazon ECRr
   shell: |
-    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr
+    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 426857564226.dkr.ecr.us-east-1.amazonaws.com/{{ ecr_name }}
     
 
 - name: Pull Docker image
   docker_image:
-    name: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr"
-    # tag: "7dbc20e6164b080e95aed0e99680ae9dcb721a7d-9894634009-1"
+    name: "426857564226.dkr.ecr.us-east-1.amazonaws.com/{{ ecr_name }}"
     tag: "{{ docker_image_tag }}"
     source: pull
 
@@ -52,7 +51,7 @@
 - name: Run Docker container
   docker_container:
     name: laravel_app
-    image: "426857564226.dkr.ecr.us-east-1.amazonaws.com/ghising-ecr:{{ docker_image_tag }}"
+    image: "426857564226.dkr.ecr.us-east-1.amazonaws.com/{{ ecr_name }}:{{ docker_image_tag }}"
     state: started
     ports:
       - "8000:8000"
