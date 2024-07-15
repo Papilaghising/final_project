@@ -9,3 +9,6 @@
   ansible.builtin.template:
     src: laravel-app.conf.j2
     dest: /etc/nginx/sites-enabled/default
+
+- name: install certbot
+  

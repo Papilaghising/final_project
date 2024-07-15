@@ -90,3 +90,9 @@ variable "private_subnets" {
   description = "list of private subnet"
   type        = list(string)
 }
+
+variable "domain_name" {
+  description = "domain name of the application"
+  type = string
+  default = "devchat"
+}
