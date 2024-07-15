@@ -1,6 +1,6 @@
 module "records" {
   source  = "terraform-aws-modules/route53/aws"
-  version = "3.0"
+  version = "3.1.0"
 
   zone_name = "sandbox.adex.ltd"
 
