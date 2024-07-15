@@ -70,8 +70,7 @@ jobs:
           terraform apply -var-file=prod.tfvars -auto-approve
 
       - name: Destroy all the Terraform Resources
-        if: github.ref_name == 'laravel'
-        # if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         run: |
           cd terraform
           terraform destroy -var-file=dev.tfvars -auto-approve
