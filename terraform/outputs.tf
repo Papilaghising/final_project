@@ -19,7 +19,10 @@ output "ec2_availability_zone" {
   value       = module.ec2.availability_zone
 }
 
-############vpc outputs###################
+#################################
+# vpc outputs
+#################################
+
 output "private_subnets" {
   description = "List of IDs of private subnets"
   value       = module.vpc.private_subnets
@@ -28,4 +31,32 @@ output "private_subnets" {
 output "public_subnets" {
   description = "List of IDs of private subnets"
   value       = module.vpc.public_subnets
+}
+
+########################################
+# Database outputs
+########################################
+
+output "db_name" {
+  description = "Name of the database"
+  value       = module.db.db_instance_name
+}
+
+output "db_host" {
+  description = "endpoint of the database"
+  value       = module.db.db_instance_endpoint
+}
+
+output "db_username" {
+  description = "username of the datatbase"
+  value       = module.db.db_instance_username
+}
+
+
+########################################
+# ECR outputs
+########################################
+output "ecr_name" {
+  description = "name of the ecr"
+  value = module.ecr.repository_name
 }

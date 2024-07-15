@@ -6,11 +6,16 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
-
 variable "project" {
   description = "Name to be used on all the resources as identifier"
   type        = string
   default     = "final_project"
+}
+
+variable "environment" {
+  description = "Environment of the app"
+  type = string
+  default = "dev"
 }
 
 variable "terraform" {
@@ -33,61 +38,55 @@ variable "silo" {
 }
 
 variable "ami_id" {
-    description = "ami id to be used on all the ec2"
-    type        = string
-    default     = ""
+  description = "ami id to be used on all the ec2"
+  type        = string
+  default     = ""
 }
 
 variable "instance_type" {
-    description = "instance type to be used on all the ec2"
-    type        = string
-    default     = ""   
+  description = "instance type to be used on all the ec2"
+  type        = string
+  default     = ""
 }
 
-variable "monitoring"{
-    description = "value"
-    type =bool
+variable "monitoring" {
+  description = "value"
+  type        = bool
 }
 
 variable "associate_public_ip_address" {
-    description ="ip address of the ec2"
-    type        =  bool
+  description = "ip address of the ec2"
+  type        = bool
 }
 
 variable "create_iam_instance_profile" {
-    description ="iam role for the ec2 instance"
-    type        =  bool
+  description = "iam role for the ec2 instance"
+  type        = bool
 }
 
 variable "ssm_policy" {
-    description ="ssm policy for ec2"
-    type        = string
-    default     =""
+  description = "ssm policy for ec2"
+  type        = string
+  default     = ""
 }
-
-variable "name" {
-    description = "name of ec2"
-    type = string
-}
-
 
 variable "cidr" {
-    description = "cidr block"
-    type        = string
+  description = "cidr block"
+  type        = string
 }
 
 
 variable "azs" {
-    description = "availability zone where ec2 resides"
-    type        = list(string)
+  description = "availability zone where ec2 resides"
+  type        = list(string)
 }
 
 variable "public_subnets" {
-    description = "list of public subnets"
-    type        = list(string)
+  description = "list of public subnets"
+  type        = list(string)
 }
 
 variable "private_subnets" {
-    description = "list of private subnet"
-    type        = list(string)
+  description = "list of private subnet"
+  type        = list(string)
 }

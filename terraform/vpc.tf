@@ -1,7 +1,7 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "chatapplication-vpc"
+  name = "${var.environment}-chatapp-vpc"
   cidr = var.cidr
 
   azs             = var.azs
