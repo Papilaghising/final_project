@@ -11,7 +11,7 @@ module "ec2" {
   subnet_id                   = module.vpc.public_subnets[0]
   create_iam_instance_profile = var.create_iam_instance_profile
   iam_role_description        = "SSM Role for accessing EC2 instance"
-  
+
   iam_role_policies = {
     SSM = data.aws_iam_policy.ssm.arn
     ECR = data.aws_iam_policy.ecr.arn

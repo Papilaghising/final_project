@@ -58,5 +58,5 @@ output "db_username" {
 ########################################
 output "ecr_name" {
   description = "name of the ecr"
-  value = module.ecr.repository_name
+  value       = module.ecr.repository_name
 }

@@ -14,8 +14,8 @@ variable "project" {
 
 variable "environment" {
   description = "Environment of the app"
-  type = string
-  default = "dev"
+  type        = string
+  default     = "dev"
 }
 
 variable "terraform" {
@@ -93,6 +93,6 @@ variable "private_subnets" {
 
 variable "domain_name" {
   description = "domain name of the application"
-  type = string
-  default = "devchat"
+  type        = string
+  default     = "devchat"
 }
