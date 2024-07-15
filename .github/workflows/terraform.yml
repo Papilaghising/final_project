@@ -169,11 +169,11 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECRr
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}/${{ env.ecr_name }}
           
-          docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }} ./laravel
+          docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}/${{ env.ecr_name }}:${{ env.IMAGE_TAG }} ./laravel
 
-          docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ecr_name }}:${{ env.IMAGE_TAG }}
 
 
       - name: install ansible and dependencies
