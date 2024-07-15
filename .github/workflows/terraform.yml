@@ -96,7 +96,7 @@ jobs:
           echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
         
       - name: Get the codebase bucket name
-        uses: mathiasvr/command-output@v2
+        uses: mathiasvr/command-output@v1
         id: resource-names
         with:
           run: |
