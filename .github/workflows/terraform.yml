@@ -87,111 +87,111 @@ jobs:
           cd terraform
           terraform init -backend-config="bucket=${{ env.backendS3Bucket }}" -backend-config="key=${{ env.backendS3AccountId }}/${{ env.backendS3StateFile }}" -backend-config="region=${{ env.backendS3Region }}"    
       
-     - name: Terraform plan
-       if: github.ref_name == 'laravel'
-       run: |
-        cd terraform
-        terraform plan -var-file=dev.tfvars
-        echo "::set-output name=ecr_name::$(terraform output -raw ecr_name)"
-        echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
-      
-     - name: Get the codebase bucket name
-       uses: mathiasvr/command-output@v2
-       id: resource-names
-       with:
+      - name: Terraform plan
+        if: github.ref_name == 'laravel'
         run: |
-          state_file_name=${{ env.backendS3StateFile }}
-          aws s3 cp s3://${{ env.backendS3Bucket }}/${{ env.backendS3StateFile }} $state_file_name
-          
-          # DB Endpoint
-          db_endpoint=$(terraform output --json -state=$state_file_name | jq -r '.db_host.value')
-          echo "db_endpoint=$db_endpoint" >> "$GITHUB_ENV"
-          
-          # DB Name
-          db_name=$(terraform output --json -state=$state_file_name | jq -r '.db_name.value')
-          echo "db_name=$db_name" >> "$GITHUB_ENV"
-          
-          # DB UserName
-          db_username=$(terraform output --json -state=$state_file_name | jq -r '.db_username.value')
-          echo "db_username=$db_username" >> "$GITHUB_ENV"            
-
-
-     - name: Generate docker image tag
-       id: generate-image-tag
-       if: steps.prerun.outputs.result != 'skip'
-       run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
-
-     - name: Create .env for application
-       run: |
-        cat << EOF > .env
-            APP_URL="https://chat.sandbox.adex.ltd"
-            APP_NAME=Laravel
-            APP_ENV=local
-            APP_KEY=base64:MFZBNV/3ipBTpWhDq1t4N7BSfmv8lY+noBb4xZs/LVY=
-            APP_DEBUG=false
-            LOG_CHANNEL=stack
-            DB_CONNECTION=mysql
-            DB_HOST=${{ env.db_endpoint }}
-            DB_PORT=3306
-            DB_DATABASE=${{ env.db_name }}
-            DB_USERNAME=${{ env.db_username }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-
-            BROADCAST_DRIVER=pusher
-            CACHE_DRIVER=file
-            QUEUE_CONNECTION=sync
-            SESSION_DRIVER=file
-            SESSION_LIFETIME=120
-
-            REDIS_HOST=127.0.0.1
-            REDIS_PASSWORD=null
-            REDIS_PORT=6379
-
-            MAIL_MAILER=smtp
-            MAIL_HOST=smtp.mailtrap.io
-            MAIL_PORT=2525
-            MAIL_USERNAME=null
-            MAIL_PASSWORD=null
-            MAIL_ENCRYPTION=null
-            MAIL_FROM_ADDRESS=null
-            MAIL_FROM_NAME="${APP_NAME}"
-
-            AWS_ACCESS_KEY_ID=
-            AWS_SECRET_ACCESS_KEY=
-            AWS_DEFAULT_REGION=us-east-1
-            AWS_BUCKET=
-
-            PUSHER_APP_ID="1828362"
-            PUSHER_APP_KEY="6669062bdb97203a01fa"
-            PUSHER_APP_SECRET="a279ee624bafeeea8237"
-            PUSHER_APP_CLUSTER="ap2"
-
-            MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-            MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-            EOF
-
-     - name: Build, tag, and push image to Amazon ECRr
-       run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}
+          cd terraform
+          terraform plan -var-file=dev.tfvars
+          echo "::set-output name=ecr_name::$(terraform output -raw ecr_name)"
+          echo "ECR_NAME=${{ steps.ecr_name.outputs.ecr_name }}" >> $GITHUB_ENV
         
-        docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }} ./laravel
+      - name: Get the codebase bucket name
+        uses: mathiasvr/command-output@v2
+        id: resource-names
+        with:
+          run: |
+            state_file_name=${{ env.backendS3StateFile }}
+            aws s3 cp s3://${{ env.backendS3Bucket }}/${{ env.backendS3StateFile }} $state_file_name
+            
+            # DB Endpoint
+            db_endpoint=$(terraform output --json -state=$state_file_name | jq -r '.db_host.value')
+            echo "db_endpoint=$db_endpoint" >> "$GITHUB_ENV"
+            
+            # DB Name
+            db_name=$(terraform output --json -state=$state_file_name | jq -r '.db_name.value')
+            echo "db_name=$db_name" >> "$GITHUB_ENV"
+            
+            # DB UserName
+            db_username=$(terraform output --json -state=$state_file_name | jq -r '.db_username.value')
+            echo "db_username=$db_username" >> "$GITHUB_ENV"            
 
-        docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Generate docker image tag
+        id: generate-image-tag
+        if: steps.prerun.outputs.result != 'skip'
+        run: echo "IMAGE_TAG=$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> $GITHUB_ENV && echo $IMAGE_TAG
+
+      - name: Create .env for application
+        run: |
+          cat << EOF > .env
+              APP_URL="https://chat.sandbox.adex.ltd"
+              APP_NAME=Laravel
+              APP_ENV=local
+              APP_KEY=base64:MFZBNV/3ipBTpWhDq1t4N7BSfmv8lY+noBb4xZs/LVY=
+              APP_DEBUG=false
+              LOG_CHANNEL=stack
+              DB_CONNECTION=mysql
+              DB_HOST=${{ env.db_endpoint }}
+              DB_PORT=3306
+              DB_DATABASE=${{ env.db_name }}
+              DB_USERNAME=${{ env.db_username }}
+              DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+
+              BROADCAST_DRIVER=pusher
+              CACHE_DRIVER=file
+              QUEUE_CONNECTION=sync
+              SESSION_DRIVER=file
+              SESSION_LIFETIME=120
+
+              REDIS_HOST=127.0.0.1
+              REDIS_PASSWORD=null
+              REDIS_PORT=6379
+
+              MAIL_MAILER=smtp
+              MAIL_HOST=smtp.mailtrap.io
+              MAIL_PORT=2525
+              MAIL_USERNAME=null
+              MAIL_PASSWORD=null
+              MAIL_ENCRYPTION=null
+              MAIL_FROM_ADDRESS=null
+              MAIL_FROM_NAME="${APP_NAME}"
+
+              AWS_ACCESS_KEY_ID=
+              AWS_SECRET_ACCESS_KEY=
+              AWS_DEFAULT_REGION=us-east-1
+              AWS_BUCKET=
+
+              PUSHER_APP_ID="1828362"
+              PUSHER_APP_KEY="6669062bdb97203a01fa"
+              PUSHER_APP_SECRET="a279ee624bafeeea8237"
+              PUSHER_APP_CLUSTER="ap2"
+
+              MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+              MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+              EOF
+
+      - name: Build, tag, and push image to Amazon ECRr
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}
+          
+          docker build  -f ./laravel/Dockerfile -t  ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }} ./laravel
+
+          docker push ${{ env.ECR_REPOSITORY_URI }}/${{ env.ECR_NAME }}:${{ env.IMAGE_TAG }}
 
 
-     - name: install ansible and dependencies
-       run: |
-        pip3 install botocore boto3 ansible
+      - name: install ansible and dependencies
+        run: |
+          pip3 install botocore boto3 ansible
 
-     - name: run ansible playbook in development environment
-       if: ${{ github.ref_name == 'laravel' }}
-       run: |
-        cd ansible
-        ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+      - name: run ansible playbook in development environment
+        if: github.ref_name == 'laravel'
+        run: |
+          cd ansible
+          ansible-playbook -i aws_ec2.yml playbook.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
 
 
-     - name: run ansible playbook in production environment
-       if: github.ref_name == 'main'
-       run: |
-        cd ansible
-        ansible-playbook -i aws_ec2.yml production.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
+      - name: run ansible playbook in production environment
+        if: github.ref_name == 'main'
+        run: |
+          cd ansible
+          ansible-playbook -i aws_ec2.yml production.yml -e "docker_image_tag=${{ env.IMAGE_TAG }}"  
