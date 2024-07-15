@@ -1,17 +1,8 @@
-module "records" {
-  source  = "terraform-aws-modules/route53/aws"
-  version = "3.1.0"
+resource "aws_route53_record" "dns"{
+  zone_id = var.zone_id
+  name    = var.domain_name
+  type    = "A"
+  ttl     = 300
 
-  zone_name = "sandbox.adex.ltd"
-
-  records = [
-    {
-      name = "${var.domain_name}"
-      type = "A"
-      ttl  = 300
-      records = [
-        "${module.ec2.public_ip}",
-      ]
-    }
-  ]
+  records = [module.ec2.public_ip]
 }

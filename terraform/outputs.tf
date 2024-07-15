@@ -60,3 +60,17 @@ output "ecr_name" {
   description = "name of the ecr"
   value       = module.ecr.repository_name
 }
+
+########################################
+# dns outputs
+########################################
+
+output "record_name" {
+  description = "The name of the Route 53 record"
+  value       = aws_route53_record.dns.name
+}
+
+output "record_fqdn" {
+  description = "The fully qualified domain name of the Route 53 record"
+  value       = aws_route53_record.dns.fqdn
+}

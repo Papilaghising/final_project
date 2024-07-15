@@ -96,3 +96,10 @@ variable "domain_name" {
   type        = string
   default     = "devchat"
 }
+
+variable "zone_id" {
+  description = "The ID of the Route 53 hosted zone"
+  type        = string
+  default     = "Z08712023TNVIZ18XIFTV"
+}
+
